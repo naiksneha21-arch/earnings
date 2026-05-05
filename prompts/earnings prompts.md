@@ -12,10 +12,10 @@ Prompt 2: Overview tab
 - Keep the content concise, business-like, and formatted in Arial 14 pt.
 
 Prompt 3: Company Trends tab
-- Build the Company Trends tab with a table or card grid showing each company and its top trends.
-- Include columns for revenue beat/miss, EPS beat/miss, and stock performance beat/miss on the day of the earnings release.
+- Build the Company Trends tab with a table or card grid showing each company and its key headwinds and tailwinds.
+- Include columns identifying: Company, Tailwind Trend (positive drivers), Headwind Trend (negative challenges), revenue beat/miss, EPS beat/miss, and stock performance on the day of the earnings release.
 - Add a dropdown control to sort by trend strength, beat/miss outcome, or stock performance.
-- Ensure each chart or table section has a header in Georgia 22 pt.
+- Ensure each chart or table section has a header in Georgia 22 pt and display tailwind trends in green and headwind trends in red.
 
 Prompt 4: Trend Sentiment tab
 - Build the Trend Sentiment tab with all major trends listed and sentiment labels: positive influence, negative influence, or neutral.
