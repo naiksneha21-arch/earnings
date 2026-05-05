@@ -3,74 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earnings Dashboard</title>
+    <title>Earnings Pulse Dashboard</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 14pt; margin: 20px; }
-        h1, h2 { font-family: Georgia, serif; font-size: 22pt; }
-        .tab { overflow: hidden; border: 1px solid #ccc; background-color: #f1f1f1; }
-        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 14px 16px; transition: 0.3s; }
-        .tab button:hover { background-color: #ddd; }
-        .tab button.active { background-color: #ccc; }
-        .tabcontent { display: none; padding: 6px 12px; border: 1px solid #ccc; border-top: none; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .summary { margin-bottom: 20px; }
-        footer { margin-top: 40px; font-size: 12pt; color: #666; }
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --border: #d9d9d9;
+            --primary: #0f4c81;
+            --secondary: #28527a;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --radius: 12px;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 14pt;
+            background: var(--bg);
+            color: var(--text);
+        }
+        h1, h2 {
+            font-family: Georgia, serif;
+            font-size: 22pt;
+            margin: 0 0 16px 0;
+        }
+        .header,
+        .toolbar,
+        .content,
+        footer {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 24px;
+        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .toolbar label {
+            font-weight: bold;
+        }
+        .toolbar select,
+        .toolbar button {
+            padding: 10px 14px;
+            font-size: 14pt;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+        }
+        .toolbar button.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .tabs button {
+            flex: 1 1 auto;
+            min-width: 160px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .tabs button.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .tab-panel {
+            display: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .summary-card,
+        .panel {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+        .summary-card h3,
+        .panel h3 {
+            font-family: Georgia, serif;
+            font-size: 18pt;
+            margin: 0 0 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #f7f8fa;
+        }
+        .trend-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 13pt;
+            color: #fff;
+        }
+        .positive { background: #2d8a4e; }
+        .negative { background: #c42b1c; }
+        .neutral { background: #6c757d; }
+        .view-mode {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .app-shell {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        .app-shell .app-frame {
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .app-shell .app-frame header {
+            padding: 14px 18px;
+            background: #0f4c81;
+            color: #fff;
+            font-family: Georgia, serif;
+            font-size: 18pt;
+        }
+        .app-shell .app-frame .app-content {
+            padding: 18px;
+        }
+        .footer-note {
+            margin-top: 26px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--muted);
+            font-size: 12pt;
+        }
+        footer {
+            margin-top: 32px;
+            color: var(--muted);
+            font-size: 12pt;
+            text-align: center;
+        }
+        @media (max-width: 860px) {
+            body { padding: 12px; }
+            .toolbar, .tabs { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
-    <h1>Earnings Dashboard</h1>
-    <p>This dashboard incorporates best practices from the copilot-instructions.md file, uses prompts from earnings prompts.md, and can be converted to PDF using the skills in skills.md.</p>
-
-    <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'Overview')">Overview</button>
-        <button class="tablinks" onclick="openTab(event, 'CompanyTrends')">Company Trends</button>
-        <button class="tablinks" onclick="openTab(event, 'TrendSentiment')">Trend Sentiment</button>
-        <button class="tablinks" onclick="openTab(event, 'GrowthAnalysis')">Growth Analysis</button>
+    <div class="header">
+        <h1>Earnings Pulse Dashboard</h1>
+        <p>This page leverages the team’s instruction file, prompt design, and PDF-to-report conversion skill set. It presents a unified web and app experience for the sample earnings data.</p>
     </div>
 
-    <div id="Overview" class="tabcontent">
-        <h2>Overview</h2>
-        <div class="summary">
-            <p>Total Earnings Calls: 150</p>
-            <p>Average Revenue Surprise: +2.5%</p>
-            <p>Average EPS Surprise: +1.8%</p>
-            <p>Aggregate Stock Reaction: +0.5%</p>
+    <div class="toolbar">
+        <div class="view-mode">
+            <label for="viewSelect">View Mode</label>
+            <button id="webViewBtn" class="active" onclick="switchView('web')">Web</button>
+            <button id="appViewBtn" onclick="switchView('app')">App</button>
         </div>
-        <table>
-            <tr><th>Metric</th><th>Value</th></tr>
-            <tr><td>Revenue Beat/Miss</td><td>60% Beat</td></tr>
-            <tr><td>EPS Beat/Miss</td><td>55% Beat</td></tr>
-        </table>
+        <label for="fiscalYear">Fiscal Year</label>
+        <select id="fiscalYear">
+            <option>FY25</option>
+            <option>FY26</option>
+        </select>
+        <label for="companyFilter">Company</label>
+        <select id="companyFilter" onchange="filterCompany()">
+            <option value="all">All Companies</option>
+            <option value="TMO">Thermo Fisher (TMO)</option>
+            <option value="DHR">Danaher (DHR)</option>
+        </select>
     </div>
 
-    <div id="CompanyTrends" class="tabcontent">
-        <h2>Company Trends</h2>
-        <table>
-            <tr><th>Company</th><th>Top Trend</th><th>Revenue Beat/Miss</th><th>EPS Beat/Miss</th><th>Stock Performance</th></tr>
-            <tr><td>Company A</td><td>AI Adoption</td><td>Beat</td><td>Beat</td><td>+3.2%</td></tr>
-            <tr><td>Company B</td><td>Supply Chain</td><td>Miss</td><td>Miss</td><td>-1.5%</td></tr>
-        </table>
+    <div class="tabs">
+        <button class="active" onclick="openTab('overview')">Overview</button>
+        <button onclick="openTab('companyTrends')">Company Trends</button>
+        <button onclick="openTab('trendSentiment')">Trend Sentiment</button>
+        <button onclick="openTab('growthAnalysis')">Growth Analysis</button>
     </div>
 
-    <div id="TrendSentiment" class="tabcontent">
-        <h2>Trend Sentiment</h2>
-        <table>
-            <tr><th>Trend</th><th>Sentiment</th><th>Companies Mentioning</th></tr>
-            <tr><td>AI Adoption</td><td>Positive</td><td>45</td></tr>
-            <tr><td>Supply Chain Issues</td><td>Negative</td><td>30</td></tr>
-            <tr><td>Remote Work</td><td>Neutral</td><td>20</td></tr>
-        </table>
+    <div class="content">
+        <div id="overview" class="tab-panel active">
+            <h2>Overview</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>Total Calls</h3>
+                    <p>2 sample earnings transcripts analyzed.</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Revenue Performance</h3>
+                    <p>Thermo Fisher revenue beat at $11.0B with +6.2% YoY growth.</p>
+                </div>
+                <div class="summary-card">
+                    <h3>EPS Performance</h3>
+                    <p>Thermo Fisher EPS beat by $0.20 to $5.44. Danaher guidance implies stable margin.</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Market Reaction</h3>
+                    <p>Observed positive signals from AI-enabled growth and new product launches.</p>
+                </div>
+            </div>
+            <div class="panel">
+                <h3>Sample Dashboard Summary</h3>
+                <p>The dashboard follows the instruction set in <strong>instructions/copilot-instructions.md</strong> and the prompt structure in <strong>prompts/earnings prompts.md</strong>. It is built for both web and app form factor and designed to support PDF conversion workflows described in <strong>skills/skills.md</strong>.</p>
+            </div>
+        </div>
+
+        <div id="companyTrends" class="tab-panel">
+            <h2>Company Trends</h2>
+            <div class="panel">
+                <h3>Top Company Insights</h3>
+                <table>
+                    <tr><th>Company</th><th>Top Trend</th><th>Revenue Outcome</th><th>EPS Outcome</th><th>Stock Influence</th></tr>
+                    <tr><td>Thermo Fisher (TMO)</td><td>AI-enabled lab automation</td><td>Beat</td><td>Beat</td><td>Positive</td></tr>
+                    <tr><td>Danaher (DHR)</td><td>Bioprocessing order momentum</td><td>Neutral</td><td>Neutral</td><td>Mixed</td></tr>
+                </table>
+            </div>
+            <div class="panel" style="margin-top:16px;">
+                <h3>Performance Beat/Miss Summary</h3>
+                <ul>
+                    <li>Thermo Fisher: Revenue $11.01B, +6.2% YoY, EPS $5.44 (+6%).</li>
+                    <li>Danaher: Core revenue growth ~0.5% YoY with 30% order growth in bioprocessing and diagnostics weakness in China.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="trendSentiment" class="tab-panel">
+            <h2>Trend Sentiment</h2>
+            <div class="panel">
+                <h3>Major Trend Analysis</h3>
+                <table>
+                    <tr><th>Trend</th><th>Sentiment</th><th>Company Count</th></tr>
+                    <tr><td>AI/Automation in Labs</td><td><span class="trend-label positive">Positive</span></td><td>2</td></tr>
+                    <tr><td>Bioprocessing Demand</td><td><span class="trend-label positive">Positive</span></td><td>2</td></tr>
+                    <tr><td>Diagnostics Policy Headwinds</td><td><span class="trend-label negative">Negative</span></td><td>1</td></tr>
+                    <tr><td>Supply Chain Resilience</td><td><span class="trend-label neutral">Neutral</span></td><td>1</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="growthAnalysis" class="tab-panel">
+            <h2>Growth Analysis</h2>
+            <div class="panel">
+                <h3>YoY Growth and Drivers</h3>
+                <table>
+                    <tr><th>Company</th><th>YoY Revenue Growth</th><th>YoY EPS Growth</th><th>Primary Drivers</th></tr>
+                    <tr><td>Thermo Fisher (TMO)</td><td>+6.2%</td><td>+6%</td><td>Bioproduction strength, AI-enabled instrument launches, Clario acquisition support.</td></tr>
+                    <tr><td>Danaher (DHR)</td><td>+0.5%</td><td>Stable</td><td>Bioprocessing equipment momentum, Diagnostics China headwinds, M&A cadence.</td></tr>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <div id="GrowthAnalysis" class="tabcontent">
-        <h2>Growth Analysis</h2>
-        <table>
-            <tr><th>Company</th><th>YoY Revenue Growth</th><th>YoY EPS Growth</th><th>Reasons</th></tr>
-            <tr><td>Company A</td><td>+15%</td><td>+12%</td><td>Increased demand in tech sector</td></tr>
-            <tr><td>Company B</td><td>-5%</td><td>-8%</td><td>Economic slowdown</td></tr>
-        </table>
+    <div class="app-shell" id="appShell" style="display:none;">
+        <div class="app-frame">
+            <header>App View - Earnings Pulse</header>
+            <div class="app-content">
+                <h3>Mobile-style Presentation</h3>
+                <p>This version maintains the same tab content and analysis in a compact app-style frame. It is designed for smaller screens and quick stakeholder review.</p>
+                <ul>
+                    <li>Responsive tab navigation</li>
+                    <li>Clear chart headers and data cards</li>
+                    <li>Professional business tone and FY25 notation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        Note: This file is built from the same dashboard functionality set required for both web and app experiences. It references <strong>instructions/copilot-instructions.md</strong>, <strong>prompts/earnings prompts.md</strong>, and <strong>skills/skills.md</strong> as part of the analysis workflow.
     </div>
 
     <footer>
@@ -78,21 +316,48 @@
     </footer>
 
     <script>
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+        const tabs = document.querySelectorAll('.tabs button');
+        const panels = document.querySelectorAll('.tab-panel');
+        const webBtn = document.getElementById('webViewBtn');
+        const appBtn = document.getElementById('appViewBtn');
+        const appShell = document.getElementById('appShell');
+        const contentArea = document.querySelector('.content');
+
+        function openTab(tabId) {
+            panels.forEach(panel => panel.classList.toggle('active', panel.id === tabId));
+            tabs.forEach(button => button.classList.toggle('active', button.textContent.toLowerCase().replace(' ', '') === tabId));
         }
-        // Default open tab
-        document.getElementsByClassName("tablinks")[0].click();
+
+        function switchView(mode) {
+            if (mode === 'app') {
+                appShell.style.display = 'block';
+                contentArea.style.display = 'none';
+                appBtn.classList.add('active');
+                webBtn.classList.remove('active');
+            } else {
+                appShell.style.display = 'none';
+                contentArea.style.display = 'block';
+                webBtn.classList.add('active');
+                appBtn.classList.remove('active');
+            }
+        }
+
+        function filterCompany() {
+            const company = document.getElementById('companyFilter').value;
+            const rows = document.querySelectorAll('#companyTrends table tr, #growthAnalysis table tr, #trendSentiment table tr');
+            rows.forEach((row, index) => {
+                if (index === 0) return;
+                const text = row.textContent;
+                if (company === 'all') {
+                    row.style.display = '';
+                } else {
+                    row.style.display = text.includes(company) ? '' : 'none';
+                }
+            });
+        }
+
+        switchView('web');
+        openTab('overview');
     </script>
 </body>
 </html>
