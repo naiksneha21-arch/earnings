@@ -5,6 +5,8 @@
 - Provide the product context, design system, and component conventions when requesting HTML/CSS suggestions.
 - Define the desired interactivity up front, including dropdown filters, controls, and interactive widgets.
 - Specify that every chart should include a header, and note the typography expectations: headers in Georgia 22 pt and content in Arial 14 pt.
+- Require professional business language and tone for dashboard deliverables.
+- Use FY25 notation for fiscal year references and currency formatted as $x.xM or $x.xB.
 - Use AI for specific deliverables like markup patterns, layout options, or accessible widget ideas.
 
 ### 2. Keep Output Modular and Reviewable
