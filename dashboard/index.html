@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 14pt; margin: 20px; }
+        h1, h2 { font-family: Georgia, serif; font-size: 22pt; }
+        .tab { overflow: hidden; border: 1px solid #ccc; background-color: #f1f1f1; }
+        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 14px 16px; transition: 0.3s; }
+        .tab button:hover { background-color: #ddd; }
+        .tab button.active { background-color: #ccc; }
+        .tabcontent { display: none; padding: 6px 12px; border: 1px solid #ccc; border-top: none; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .summary { margin-bottom: 20px; }
+        footer { margin-top: 40px; font-size: 12pt; color: #666; }
+    </style>
+</head>
+<body>
+    <h1>Earnings Dashboard</h1>
+    <p>This dashboard incorporates best practices from the copilot-instructions.md file, uses prompts from earnings prompts.md, and can be converted to PDF using the skills in skills.md.</p>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Overview')">Overview</button>
+        <button class="tablinks" onclick="openTab(event, 'CompanyTrends')">Company Trends</button>
+        <button class="tablinks" onclick="openTab(event, 'TrendSentiment')">Trend Sentiment</button>
+        <button class="tablinks" onclick="openTab(event, 'GrowthAnalysis')">Growth Analysis</button>
+    </div>
+
+    <div id="Overview" class="tabcontent">
+        <h2>Overview</h2>
+        <div class="summary">
+            <p>Total Earnings Calls: 150</p>
+            <p>Average Revenue Surprise: +2.5%</p>
+            <p>Average EPS Surprise: +1.8%</p>
+            <p>Aggregate Stock Reaction: +0.5%</p>
+        </div>
+        <table>
+            <tr><th>Metric</th><th>Value</th></tr>
+            <tr><td>Revenue Beat/Miss</td><td>60% Beat</td></tr>
+            <tr><td>EPS Beat/Miss</td><td>55% Beat</td></tr>
+        </table>
+    </div>
+
+    <div id="CompanyTrends" class="tabcontent">
+        <h2>Company Trends</h2>
+        <table>
+            <tr><th>Company</th><th>Top Trend</th><th>Revenue Beat/Miss</th><th>EPS Beat/Miss</th><th>Stock Performance</th></tr>
+            <tr><td>Company A</td><td>AI Adoption</td><td>Beat</td><td>Beat</td><td>+3.2%</td></tr>
+            <tr><td>Company B</td><td>Supply Chain</td><td>Miss</td><td>Miss</td><td>-1.5%</td></tr>
+        </table>
+    </div>
+
+    <div id="TrendSentiment" class="tabcontent">
+        <h2>Trend Sentiment</h2>
+        <table>
+            <tr><th>Trend</th><th>Sentiment</th><th>Companies Mentioning</th></tr>
+            <tr><td>AI Adoption</td><td>Positive</td><td>45</td></tr>
+            <tr><td>Supply Chain Issues</td><td>Negative</td><td>30</td></tr>
+            <tr><td>Remote Work</td><td>Neutral</td><td>20</td></tr>
+        </table>
+    </div>
+
+    <div id="GrowthAnalysis" class="tabcontent">
+        <h2>Growth Analysis</h2>
+        <table>
+            <tr><th>Company</th><th>YoY Revenue Growth</th><th>YoY EPS Growth</th><th>Reasons</th></tr>
+            <tr><td>Company A</td><td>+15%</td><td>+12%</td><td>Increased demand in tech sector</td></tr>
+            <tr><td>Company B</td><td>-5%</td><td>-8%</td><td>Economic slowdown</td></tr>
+        </table>
+    </div>
+
+    <footer>
+        2017-2026 PwC US. All rights reserved. PwC US refers to US group of member firms and may sometimes refer to the PwC network. Each member firm is a separate legal entity.
+    </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        // Default open tab
+        document.getElementsByClassName("tablinks")[0].click();
+    </script>
+</body>
+</html>
